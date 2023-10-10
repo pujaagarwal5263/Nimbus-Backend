@@ -5,6 +5,22 @@ const codeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description:{
+    type: String
+  },
+  fname:{
+    type: String
+  },
+  post:{
+    type:String
+  },
+  label:{
+    type: String
+  },
+  isArray:{
+    type: Boolean,
+    default: false
+  },
   input: {
     type: String,
     required: true,
@@ -16,7 +32,7 @@ const codeSchema = new mongoose.Schema({
   testcases: {
     type: [
       {
-        inputs: [String], // Modify this based on your actual testcase data structure
+        inputs: Array, // Modify this based on your actual testcase data structure
         expectedOutput: String,
       },
     ],
