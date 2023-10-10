@@ -20,7 +20,7 @@ const codeExecute = async (req, res) => {
   const codeDetails = await getParticularCode(codeId);
 
   try {
-    console.log(codeDetails.post);
+    //(codeDetails.post);
     fs.writeFileSync('test.py', pre + code + codeDetails.post);
 
     // Create an array to store the results of each test case
@@ -43,7 +43,7 @@ const codeExecute = async (req, res) => {
         pythonOptions: ['-u'],
         args: [...inputArray, output],
       };
-      console.log(options);
+      //console.log(options);
 
       const pythonResults = await PythonShell.run('test.py', options);
       // console.log(pythonResults == output);
