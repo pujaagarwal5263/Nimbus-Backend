@@ -56,7 +56,7 @@ const codeExecute = async (req, res) => {
     return res.status(200).json({ testResults: results });
   } catch (error) {
     console.error('Error executing Python script:', error);
-    return res.status(500).send('Internal Server Error');
+    return res.status(500).send(error);
   }
 };
 

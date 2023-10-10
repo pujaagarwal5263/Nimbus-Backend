@@ -1,10 +1,9 @@
 import sys;
 
-def len_sum(a, b): 
- return len(a)+len(b)
+def num_check(a): 
+  return
 
 if __name__ == "__main__":
-    a=sys.argv[1]
-    b=sys.argv[2]
-    result=int(sys.argv[3])
-    print(len_sum(a,b))
+    a=int(sys.argv[1])
+    result=sys.argv[2]
+    print(num_check(a))

@@ -47,13 +47,13 @@ const CodingQuestion = require('./models/codeSchema');
 
 const questionData=
     {
-      question: 'Reverse digits of Number',
-      input: '123',
-      output: '321',
-      testcases: [{ inputs: [123], expectedOutput: '321' },{ inputs: [51], expectedOutput: '15' },{ inputs: [98], expectedOutput: '89' }],
-      function: 'def palindrome(a, b): return',
-      post:"\n\nif __name__ == \"__main__\":\n    a=int(sys.argv[1])\n    result=int(sys.argv[2])\n    print(palindrome(a))",
-      fname:'palindrome',
+      question: 'Positive or Negative Number',
+      input: '10',
+      output: 'Positive',
+      testcases: [{ inputs: [12], expectedOutput: 'Positive' },{ inputs: [-5], expectedOutput: 'Negative' },{ inputs: [0], expectedOutput: 'Zero' }],
+      function: 'def num_check(a): return',
+      post:"\n\nif __name__ == \"__main__\":\n    a=int(sys.argv[1])\n    result=sys.argv[2]\n    print(num_check(a))",
+      fname:'num_check',
     }
 
 
