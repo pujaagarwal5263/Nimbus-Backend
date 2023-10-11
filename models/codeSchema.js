@@ -42,6 +42,9 @@ const codeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  solution:{
+    type: String
+  }
 });
 
 const codeQuestions = mongoose.model('codeSchema', codeSchema);
