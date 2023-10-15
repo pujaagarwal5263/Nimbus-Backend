@@ -161,5 +161,68 @@ const addCredits = async (req, res) => {
   }
 };
 
+const registerSpace = async (req, res) => {
+  const { codeID, spaceID, username, profileURL } = req.body;
 
-module.exports={codeExecute,getAllCodes,getCodeByID, saveUser, manageCreds,addCredits}
+  try {
+    const code = await CodingQuestion.findOne({ _id: codeID });
+
+    if (!code) {
+      return res.status(404).json({ error: 'Code not found' });
+    }
+
+    code.spaces.push({
+      spaceID,
+      username,
+      profileURL,
+    });
+
+    const updatedCode = await code.save();
+
+    return res.status(200).json(updatedCode);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const getAllSpacesForCode = async (req, res) => {
+  const { codeID } = req.body;
+
+  try {
+    const code = await CodingQuestion.findOne({ _id: codeID });
+
+    if (!code) {
+      return res.status(404).json({ error: 'Code not found' });
+    }
+    const spaces = code.spaces;
+
+    return res.status(200).json(spaces);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const deleteSpace= async (req, res) => {
+  try {
+    const { codeID, spaceID } = req.body;
+
+    const code = await CodingQuestion.findOne({ _id: codeID });
+
+    if (!code) {
+      return res.status(404).json({ message: 'Code not found' });
+    }
+
+    code.spaces = code.spaces.filter((space) => space.spaceID !== spaceID);
+    await code.save();
+
+    return res.json({ message: 'Space deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+module.exports={codeExecute,getAllCodes,getCodeByID, saveUser, manageCreds,addCredits, registerSpace, getAllSpacesForCode, deleteSpace}

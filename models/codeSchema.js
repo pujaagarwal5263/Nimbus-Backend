@@ -38,6 +38,15 @@ const codeSchema = new mongoose.Schema({
     ],
     required: true,
   },
+  spaces:{
+    type:[
+      {
+        spaceID: String,
+        username: String,
+        profileURL: String
+      }
+    ]
+  },
   function: {
     type: String,
     required: true,
