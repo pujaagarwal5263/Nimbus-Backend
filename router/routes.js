@@ -8,8 +8,14 @@ router.get("/code/:id",controllers.getCodeByID);
 router.post("/saveuser", controllers.saveUser);
 router.post("/managecreds",controllers.manageCreds)
 router.post("/addcredits",controllers.addCredits)
+
+//for ably hackathon
 router.post("/registerspace",controllers.registerSpace);
 router.post("/getspaces",controllers.getAllSpacesForCode)
 router.post("/deletespace",controllers.deleteSpace)
+
+//for leetcode like experience
+router.get("/contributions",controllers.userContributions);
+router.get("/solved-questions", controllers.solvedQuestions);
 
 module.exports = router;

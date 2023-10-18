@@ -22,6 +22,21 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      solvedAt: {
+        type: Date, 
+        default: Date.now, 
+      },
+    },
+  ],
+  contributions: [
+    {
+      date: {
+        type: String
+      },
+      count: {
+        type: Number,
+        default: 0,
+      },
     },
   ],
   credits: {
