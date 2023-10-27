@@ -8,6 +8,8 @@ router.get("/code/:id",controllers.getCodeByID);
 router.post("/saveuser", controllers.saveUser);
 router.post("/managecreds",controllers.manageCreds)
 router.post("/addcredits",controllers.addCredits)
+//for video call implementation
+router.post("/getroomidfromspace",controllers.getRoomIDFromSpace)
 
 //for ably hackathon
 router.post("/registerspace",controllers.registerSpace);

@@ -46,7 +46,7 @@ const codeExecute = async (req, res) => {
       user.solvedQuestions.push({
         question: codeId,
         starsEarned,
-        solvedAt: Date.now()
+        solvedAt: Date.now(),
       });
     }
 
@@ -179,19 +179,29 @@ const addCredits = async (req, res) => {
 };
 
 const registerSpace = async (req, res) => {
+  console.log("object");
   const { codeID, spaceID, username, profileURL } = req.body;
 
   try {
     const code = await CodingQuestion.findOne({ _id: codeID });
-
     if (!code) {
       return res.status(404).json({ error: "Code not found" });
     }
+    const response = await fetch(`https://api.videosdk.live/v2/rooms`, {
+      method: "POST",
+      headers: {
+        authorization: `${process.env.VIDEOSDK_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    const { roomId } = await response.json();
 
     code.spaces.push({
       spaceID,
       username,
       profileURL,
+      roomId,
     });
 
     const updatedCode = await code.save();
@@ -200,6 +210,28 @@ const registerSpace = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server error" });
+  }
+};
+
+const getRoomIDFromSpace = async (req, res) => {
+  try {
+    const spaceID = req.body.spaceID;
+    // b54c8ce2-a579-43f7-86b6-c315a02c01de
+    // Find the user and space that matches the provided spaceID
+    const existingSpace = await CodingQuestion.findOne({
+      "spaces.spaceID": spaceID,
+    });
+
+    if (existingSpace) {
+      const space = existingSpace.spaces.find(space => space.spaceID === spaceID);
+      const roomID = space.roomId;
+      return res.status(200).json({ roomID });
+    } else {
+      return res.status(404).send("Room not found");
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal server error");
   }
 };
 
@@ -265,32 +297,33 @@ const solvedQuestions = async (req, res) => {
     // Find the user based on the provided email and populate solved questions with question details from the codeSchema
     const user = await User.findOne({ email })
       .populate({
-        path: 'solvedQuestions.question',
+        path: "solvedQuestions.question",
         model: CodingQuestion,
-        select: 'question', // Add other fields you want to retrieve from codeSchema
+        select: "question", // Add other fields you want to retrieve from codeSchema
       })
       .exec();
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     user.solvedQuestions.reverse();
-    const formattedSolvedQuestions = user.solvedQuestions.map((solvedQuestion) => {
-      return {
-        question: solvedQuestion.question.question,
-        starsEarned: solvedQuestion.starsEarned,
-        solvedAt: solvedQuestion.solvedAt.toDateString(), // Format date as "Day Month DD YYYY"
-      };
-    });
+    const formattedSolvedQuestions = user.solvedQuestions.map(
+      (solvedQuestion) => {
+        return {
+          question: solvedQuestion.question.question,
+          starsEarned: solvedQuestion.starsEarned,
+          solvedAt: solvedQuestion.solvedAt.toDateString(), // Format date as "Day Month DD YYYY"
+        };
+      }
+    );
 
     res.status(200).json(formattedSolvedQuestions);
   } catch (error) {
-    console.error('Error fetching solved questions:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching solved questions:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 module.exports = {
   codeExecute,
@@ -303,5 +336,6 @@ module.exports = {
   getAllSpacesForCode,
   deleteSpace,
   userContributions,
-  solvedQuestions
+  solvedQuestions,
+  getRoomIDFromSpace
 };
