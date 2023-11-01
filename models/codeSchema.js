@@ -43,7 +43,8 @@ const codeSchema = new mongoose.Schema({
       {
         spaceID: String,
         username: String,
-        profileURL: String
+        profileURL: String,
+        roomId: String
       }
     ]
   },
