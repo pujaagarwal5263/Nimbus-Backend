@@ -2,7 +2,7 @@ const fs = require("fs");
 const PythonShell = require("python-shell").PythonShell;
 const CodingQuestion = require("../models/codeSchema");
 const User = require("../models/userSchema");
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 const pre = "import sys;\n\n";
 
@@ -188,15 +188,24 @@ const registerSpace = async (req, res) => {
     if (!code) {
       return res.status(404).json({ error: "Code not found" });
     }
-    const response = await fetch(`https://api.videosdk.live/v2/rooms`, {
-      method: "POST",
+    // const response = await fetch(`https://api.videosdk.live/v2/rooms`, {
+    //   method: "POST",
+    //   headers: {
+    //     authorization: `${process.env.VIDEOSDK_TOKEN}`,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({}),
+    // });
+    // const { roomId } = await response.json();
+
+    const response = await axios.post('https://api.videosdk.live/v2/rooms', {}, {
       headers: {
-        authorization: `${process.env.VIDEOSDK_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
+        Authorization: process.env.VIDEOSDK_TOKEN,
+        'Content-Type': 'application/json',
+      }
     });
-    const { roomId } = await response.json();
+  
+    const { data: { roomId } } = response;
 
     code.spaces.push({
       spaceID,
