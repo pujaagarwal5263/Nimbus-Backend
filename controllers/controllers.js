@@ -37,6 +37,7 @@ const codeExecute = async (req, res) => {
     const starsEarned = Math.round((trueCount / results.length) * 5);
 
     const user = await User.findOne({ email });
+    if(user){
     const solvedQuestion = user.solvedQuestions.find((sq) =>
       sq.question.equals(codeId)
     );
@@ -66,8 +67,12 @@ const codeExecute = async (req, res) => {
     }
 
     await user.save();
-
+  
     return res.status(200).json({ testResults: results, starsEarned });
+  }
+  else{
+    return res.status(200).json({ testResults: results });
+  }
     //return res.status(200).json({ testResults: results });
   } catch (error) {
     console.error("Error executing Python script:", error);
