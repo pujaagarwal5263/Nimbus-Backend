@@ -205,7 +205,7 @@ const registerSpace = async (req, res) => {
 
     const response = await axios.post('https://api.videosdk.live/v2/rooms', {}, {
       headers: {
-        Authorization: process.env.VIDEOSDK_TOKEN,
+        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI4MzBmMjk2MC1iNzI4LTQyZDAtODVhNi03MjIzZWZmMDhhMWIiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcwNzgxMjExNiwiZXhwIjoxNzA3ODk4NTE2fQ.IHIHbhysioibLKC1yCZR-zB0XiPOLMMQ7catND1v5JU",
         'Content-Type': 'application/json',
       }
     });
